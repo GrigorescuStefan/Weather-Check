@@ -17,4 +17,4 @@ I created this app in order to learn more about how APIs work and how to send an
 
 - Improving UI & UX [For the future]
 
-- Statistics based on API data and [TBD]
+- Statistics based on API data[TBD]
