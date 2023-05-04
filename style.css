@@ -28,3 +28,12 @@
     background-color: #ccc;
     margin-top: 20px;
 }
+
+.api-results {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 50px;
+    font-size: 20px;
+}

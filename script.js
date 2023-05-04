@@ -9,7 +9,7 @@ input.addEventListener("keydown", async function (event) {
     var userLocation = event.target.value;
     try {
       searchLocation(userLocation)
-        .then((coords) => console.log(coords))
+        .then((coords) => APICall(coords))
         .catch((error) => console.error(error));
     } catch (error) {
       console.error(error);
@@ -36,9 +36,7 @@ function searchLocation(searchLocation) {
             longitude = values[longitudeCoordinate]
               .replace(/["{}]/g, "")
               .split(":")[CityKey];
-            // console.log([latitude, longitude]);
             const coordinates = [latitude, longitude];
-            // console.log(coordinates);
             resolve(coordinates);
             break;
           }
@@ -50,4 +48,21 @@ function searchLocation(searchLocation) {
       },
     });
   });
+}
+
+function APICall(arrayCoordinates) {
+  const responseData = {};
+  fetch(
+    `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min,precipitation_hours&forecast_days=1&timezone=auto`
+  )
+    .then((response) => response.json())
+    .then((response) => {
+      responseData.temperatureMax = response.daily.apparent_temperature_max;
+      responseData.temperatureMin = response.daily.apparent_temperature_min;
+      responseData.precipitationHours = response.daily.precipitation_hours;
+      document.getElementById('temperatureMax').innerHTML = responseData.temperatureMax;
+      document.getElementById('temperatureMin').innerHTML = responseData.temperatureMin;
+      document.getElementById('precipitationHours').innerHTML = responseData.precipitationHours;
+    })
+    .catch((error) => console.error(error));
 }
