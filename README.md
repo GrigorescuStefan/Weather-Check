@@ -11,9 +11,10 @@ I created this app in order to learn more about how APIs work and how to send an
 
 - Retrieval of Longitude and Latitude from CSV using a city name [✓]
 
-- API call and data retrieval for relevant information [WIP] - https://open-meteo.com/
+- API call and data retrieval for relevant information [✓] - https://open-meteo.com/
+  Retrieved highest and lowest temperature for the current day, as well as the hour/hours with the highest chance of rain.
 
-- Storing CSV in a Database to access it remotely [For the future]
+- Storing CSV in a Database to access it remotely [WIP]
 
 - Improving UI & UX [For the future]
 
