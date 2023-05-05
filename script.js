@@ -28,7 +28,7 @@ async function GeocodingAPICall(locationSearch) {
 function WeatherAPICall(arrayCoordinates) {
   const responseData = {};
   fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min,precipitation_hours&forecast_days=1&timezone=auto`
+    `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min&forecast_days=1&timezone=auto`
   )
     .then((response) => response.json())
     .then((response) => {
@@ -37,7 +37,6 @@ function WeatherAPICall(arrayCoordinates) {
       responseData.precipitationHours = response.daily.precipitation_hours;
       document.getElementById('temperatureMax').innerHTML = responseData.temperatureMax;
       document.getElementById('temperatureMin').innerHTML = responseData.temperatureMin;
-      document.getElementById('precipitationHours').innerHTML = responseData.precipitationHours;
     })
     .catch((error) => console.error(error));
 }

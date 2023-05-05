@@ -10,9 +10,13 @@
     margin-top: 20px;
     padding: 10px;
     border-radius: 5px;
-    border: none;
+    border-bottom-style: 2px solid black;
+    border-top-style: none;
+    border-left-style: none;
+    border-right-style: none;
     font-size: 16px;
     font-family: 'IBM Plex Sans', sans-serif;
+    text-align-last: center;
 }
 
 .search-box svg {
