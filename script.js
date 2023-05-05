@@ -21,21 +21,21 @@ async function GeocodingAPICall(locationSearch) {
   const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${locationSearch}&count=2&language=en&format=json`);
   const jsonData = await response.json();
   let cityCoordinates = [jsonData["results"][0].latitude, jsonData["results"][0].longitude];
-  console.log(cityCoordinates)
   return cityCoordinates;
 }
 
 function WeatherAPICall(arrayCoordinates) {
   const responseData = {};
   fetch(
-    `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min&forecast_days=1&timezone=auto`
+    `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min&current_weather=true&forecast_days=1&timezone=auto`
   )
     .then((response) => response.json())
     .then((response) => {
       responseData.temperatureMax = response.daily.apparent_temperature_max;
       responseData.temperatureMin = response.daily.apparent_temperature_min;
-      responseData.precipitationHours = response.daily.precipitation_hours;
+      responseData.currentTemperature = response.current_weather.temperature;
       document.getElementById('temperatureMax').innerHTML = responseData.temperatureMax;
+      document.getElementById('currentTemperature').innerHTML = responseData.currentTemperature;
       document.getElementById('temperatureMin').innerHTML = responseData.temperatureMin;
     })
     .catch((error) => console.error(error));
