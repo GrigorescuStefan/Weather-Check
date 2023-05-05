@@ -8,9 +8,8 @@ input.addEventListener("keydown", async function (event) {
   if (event.key === "Enter") {
     var userLocation = event.target.value;
     try {
-      searchLocation(userLocation)
-        .then((coords) => APICall(coords))
-        .catch((error) => console.error(error));
+      GeocodingAPICall(userLocation)
+      .then((coords) => WeatherAPICall(coords))
     } catch (error) {
       console.error(error);
     }
@@ -18,39 +17,15 @@ input.addEventListener("keydown", async function (event) {
   }
 });
 
-function searchLocation(searchLocation) {
-  return new Promise((resolve, reject) => {
-    Papa.parse("worldcities.csv", {
-      download: true,
-      header: true,
-      delimiter: ",",
-      complete: function (results) {
-        for (let i = 0; i < results.data.length; i++) {
-          const StringifiedData = JSON.stringify(results.data[i]);
-          const values = StringifiedData.split(",");
-          const city = values[CityKey].replace(/["{}]/g, "").split(":");
-          if (city[1] === searchLocation) {
-            latitude = values[latitudeCoordinate]
-              .replace(/["{}]/g, "")
-              .split(":")[CityKey];
-            longitude = values[longitudeCoordinate]
-              .replace(/["{}]/g, "")
-              .split(":")[CityKey];
-            const coordinates = [latitude, longitude];
-            resolve(coordinates);
-            break;
-          }
-        }
-        reject("Location is unknown!");
-      },
-      error: function (error) {
-        reject(error);
-      },
-    });
-  });
+async function GeocodingAPICall(locationSearch) {
+  const response = await fetch(`https://geocoding-api.open-meteo.com/v1/search?name=${locationSearch}&count=2&language=en&format=json`);
+  const jsonData = await response.json();
+  let cityCoordinates = [jsonData["results"][0].latitude, jsonData["results"][0].longitude];
+  console.log(cityCoordinates)
+  return cityCoordinates;
 }
 
-function APICall(arrayCoordinates) {
+function WeatherAPICall(arrayCoordinates) {
   const responseData = {};
   fetch(
     `https://api.open-meteo.com/v1/forecast?latitude=${arrayCoordinates[0]}&longitude=${arrayCoordinates[1]}&daily=apparent_temperature_max,apparent_temperature_min,precipitation_hours&forecast_days=1&timezone=auto`
